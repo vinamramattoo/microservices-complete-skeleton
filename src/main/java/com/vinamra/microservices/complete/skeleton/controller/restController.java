@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,29 +24,26 @@ public class restController {
     ApplicationService service;
 
 
-//    RestApi ===========================
-
-
     //    Creation
     @PostMapping(TopicPaths.CREATE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Topic createTopic(@RequestBody Topic topic) {
+    public Topic createTopic(@Valid @RequestBody Topic topic) {
         return service.createTopicObject(topic);
     }
 
     @PostMapping(BlogPaths.CREATE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Blog createBlog(@RequestBody BlogCreator blogCreator) throws ResourceNotFoundException {
+    public Blog createBlog(@Valid @RequestBody BlogCreator blogCreator) throws ResourceNotFoundException {
         return service.createBlogObject(blogCreator.getBlog(), blogCreator.getTopic());
     }
 
     @PostMapping(CommentPaths.CREATE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Comment createComment(@RequestBody CommentCreator comment) throws ResourceNotFoundException {
+    public Comment createComment(@Valid @RequestBody CommentCreator comment) throws ResourceNotFoundException {
         return service.createCommentObject(comment.getComment(), comment.getBlog());
     }
 
-//get
+    //get
 
     @GetMapping(TopicPaths.GET_ITEMS)
     @ResponseStatus(value = HttpStatus.OK)
@@ -92,19 +90,19 @@ public class restController {
     @PutMapping(TopicPaths.UPDATE)
     @ResponseStatus(value = HttpStatus.OK)
     public Topic updateTopics(@PathVariable int id, @RequestBody Topic topic) throws ResourceNotFoundException {
-        return service.updateTopic(id,topic);
+        return service.updateTopic(id, topic);
     }
 
     @PutMapping(BlogPaths.UPDATE)
     @ResponseStatus(value = HttpStatus.OK)
     public Blog updateBlogs(@PathVariable int id, @RequestBody Blog blog) throws ResourceNotFoundException {
-        return service.updateBlog(id,blog);
+        return service.updateBlog(id, blog);
     }
 
     @PutMapping(CommentPaths.UPDATE)
     @ResponseStatus(value = HttpStatus.OK)
     public Comment updateComments(@PathVariable int id, @RequestBody Comment comment) throws ResourceNotFoundException {
-        return service.updateComment(id,comment);
+        return service.updateComment(id, comment);
     }
 
 }
